@@ -5,5 +5,16 @@
     <artifactId>user</artifactId>
     <version>0.0.1</version>
   </parent>
+  
   <artifactId>user-model</artifactId>
+  <packaging>jar</packaging>
+  <name>user-model</name>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    
+  </dependencies>
 </project>
