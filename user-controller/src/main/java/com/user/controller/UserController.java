@@ -14,6 +14,8 @@ import com.alibaba.fastjson.JSON;
 import com.user.entity.User;
 import com.user.service.UserService;
 
+import redis.clients.jedis.Jedis;
+
 
 
 /**
@@ -35,24 +37,52 @@ public class UserController {
 	 */
 	@RequestMapping("/login")
 	public String login(User user,HttpServletRequest request){
-		User resultUser=userService.login(user);
 		logger.info(JSON.toJSONStringWithDateFormat(user, "yyyy-MM-dd HH:mm:ss"));
-		if(resultUser==null){
-			request.setAttribute("user", user);
-			request.setAttribute("errorMsg", "用户名或密码错误");
-			logger.error("用户名{}或密码错误",user.getUserName());
-			return "index";
-		}else{
-			HttpSession session=request.getSession();
-			session.setAttribute("currentUser", resultUser);
-			logger.info("用户名[{}]登录成功",user.getUserName());
-			return "redirect:/success.jsp";
+		//加入redis校验
+		Jedis jedis=null;
+		try{
+			jedis=new Jedis("127.0.0.1", 6379);
+			String userName=jedis.get(user.getUserName());
+			if("".equals(userName) || userName==null){
+				User resultUser=userService.login(user);
+				if(resultUser==null){
+					request.setAttribute("user", user);
+					request.setAttribute("errorMsg", "用户名或密码错误");
+					logger.error("用户名{}或密码错误",user.getUserName());
+					return "index";
+				}else{
+					//redis存储登录人信息
+					jedis.set(resultUser.getUserName(), resultUser.getPassword());
+					logger.info("用户名[{}]缓存到redis",user.getUserName());
+					
+					HttpSession session=request.getSession();
+					session.setAttribute("currentUser", resultUser);
+					return "redirect:/success.jsp";
+				}
+			}else{
+				User resultUser=userService.login(user);
+				HttpSession session=request.getSession();
+				session.setAttribute("currentUser", resultUser);
+				logger.info("用户名[{}]redis已存在登录信息,登录成功,",user.getUserName());
+				return "redirect:/success.jsp";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			jedis.close();
 		}
+		return "index";
 	}
 	
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request){
 		HttpSession session=request.getSession();
+		User user=(User) session.getAttribute("currentUser");
+		if(user!=null){
+			Jedis jedis=new Jedis("127.0.0.1", 6379);
+			jedis.set(user.getUserName(), "");
+			jedis.close();
+		}
 		session.setAttribute("currentUser", null);
 		return "redirect:/index.jsp";
 	}
