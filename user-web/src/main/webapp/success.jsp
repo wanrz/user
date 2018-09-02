@@ -8,5 +8,6 @@
 </head>
 <body>
 欢迎：${currentUser.userName }
+<a href="<%=request.getContextPath()%>/user/1/showUser.do">showuser</a>
 </body>
 </html>

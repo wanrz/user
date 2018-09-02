@@ -22,4 +22,8 @@ public class UserServiceImpl implements UserService{
 		return userDao.login(user);
 	}
 
+	public User findById(String id) {
+		return userDao.findById(id);
+	}
+
 }
