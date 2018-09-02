@@ -81,7 +81,7 @@
     
     <dependency>
     	<groupId>com.java</groupId>
-    	<artifactId>user-dao</artifactId>
+    	<artifactId>user-mapper</artifactId>
     	<version>0.0.1</version>
     </dependency>
   </dependencies>
