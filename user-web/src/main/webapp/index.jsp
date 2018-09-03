@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-欢迎用户：${currentUser.userName }
+欢迎用户：${currentUser.userName }登录
 
 <form action="${pageContext.request.contextPath }/user/login.do" method="post">
 	userName:<input type="text" name="userName" value="${user.userName }"/><br/>
