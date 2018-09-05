@@ -14,18 +14,19 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">    
         
 	<!-- 配置数据库相关参数properties的属性：${url}--> 
-<!--     <context:property-placeholder location="classpath:jdbc/init-config.properties"/> -->
+    <context:property-placeholder location="classpath:jdbc/init-config.properties" ignore-unresolvable="true"/>
 	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:jdbc/init-config.properties</value>
-			</list>
-		</property>
-	</bean>
+<!-- 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!-- 		<property name="locations"> -->
+<!-- 			<list> -->
+<!-- 				<value>classpath:jdbc/init-config.properties</value> -->
+<!-- 				<value>classpath:spring/redis11.properties</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
     
 	<!-- 自动扫描 -->
-	<context:component-scan base-package="com.user.service" />
+	<context:component-scan base-package="com.user.service,com.thirdparty.service" />
 	
 	
 	<!-- 配置数据源 -->
