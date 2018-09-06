@@ -6,7 +6,3 @@
 /.project
 .apt_generated/
 .factorypath
-.properties
-/target/classes/META-INF/MANIFEST.MF
-pom.properties
-
