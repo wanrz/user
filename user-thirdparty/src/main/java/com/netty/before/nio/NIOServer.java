@@ -86,12 +86,19 @@ public class NIOServer {
 		SocketChannel channel = (SocketChannel) key.channel();
 		// 创建读取的缓冲区
 		ByteBuffer buffer = ByteBuffer.allocate(512); 
-		channel.read(buffer);
-		byte[] data = buffer.array();
-		String msg = new String(data).trim();
-		System.out.println("服务端收到信息：" + msg);
-		ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes("utf-8"));
-		channel.write(outBuffer);// 将消息回送给客户端
+		int read=channel.read(buffer);
+		if(read>0){
+			byte[] data = buffer.array();
+			String msg = new String(data).trim();
+			System.out.println("服务端收到信息：" + msg);
+			//回写数据
+			ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes("utf-8"));
+			channel.write(outBuffer);// 将消息回送给客户端
+		}else{
+			System.out.println("客户端关闭");
+			key.cancel();
+		}
+		
 	}
  
 	/**
