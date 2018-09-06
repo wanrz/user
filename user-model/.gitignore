@@ -2,7 +2,9 @@
 /.settings/*
 /bin/
 /target/
+/target/*
 /.classpath
+.classpath
 /.project
 .apt_generated/
 .factorypath
