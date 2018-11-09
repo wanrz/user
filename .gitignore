@@ -6,3 +6,6 @@
 /.project
 .apt_generated/
 .factorypath
+/.idea/*
+jxl.log
+/src/main/resources/spring/init-config.properties
