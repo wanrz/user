@@ -1,3 +1,0 @@
-1.将proto文件夹下面要生成代码的配置文件copy到protobuild文件夹下面
-2.运行protoc.exe文件，生成java代码(如果无法运行可以把protobuild文件拿出来放在外面执行)
-3.将生成的代码copy到proto文件夹下面

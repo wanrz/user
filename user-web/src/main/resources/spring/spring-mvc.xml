@@ -14,6 +14,9 @@
         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">   
+       
+    <mvc:resources location="classpath:/static/jsp/" mapping="/jsp/**"
+		cache-period="31556926" />
         
     <!-- 会把 "/**" url,注册到 SimpleUrlHandlerMapping 的 urlMap 中,把对静态资源的访问由 HandlerMapping -->
 	<!-- 转到 org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler 
