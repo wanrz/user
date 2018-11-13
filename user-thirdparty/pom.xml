@@ -38,27 +38,7 @@
 		<artifactId>jedis</artifactId>
     </dependency>
     
-    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-    <!-- 引入netty -->
-<!-- 	<dependency> -->
-<!-- 	    <groupId>io.netty</groupId> -->
-<!-- 	    <artifactId>netty-all</artifactId> -->
-<!-- 	    <version>4.1.29.Final</version> -->
-<!-- 	</dependency> -->
-    <!-- https://mvnrepository.com/artifact/org.jboss.netty/netty -->
-	<dependency>
-	     <groupId>io.netty</groupId>
-		 <artifactId>netty</artifactId>
-	</dependency>
-	<dependency>
-	    <groupId>io.netty</groupId>
-	    <artifactId>netty-all</artifactId>
-	</dependency>
-	<dependency>
-	    <groupId>com.google.protobuf</groupId>
-	    <artifactId>protobuf-java</artifactId>
-	</dependency>
-	
+
 	<dependency>
   		<groupId>com.java</groupId>
   		<artifactId>user-mapper</artifactId>
