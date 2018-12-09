@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.util.config.IConfig;
+
 /**
  * ClassName:Constants <br/>
  * Description: 下面用到的一些常量. <br/>
@@ -214,5 +216,12 @@ public class Constants {
 		INTERFACE_TYPE_MAP.put("compareFaces", "0700");
 		INTERFACE_TYPE_MAP.put("compareFaces1", "0701");
 	}
-
+	
+	public interface Config {
+		public static final String DOMAIN_WWW = IConfig.getProperty("domain.www");
+		public static final String FILE_STORAGE_WAY = IConfig.getProperty("file.storage.way");
+		public static final String IBIS_FILE_PATH = IConfig.getProperty("ibis.file.path");
+		
+	}
+	
 }

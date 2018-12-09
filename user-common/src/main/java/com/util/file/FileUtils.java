@@ -1,13 +1,20 @@
 package com.util.file;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.common.BaseConstants;
+import com.util.HttpsRequestProxy;
 /**
  * Project Name：abc-ibis20170115  <br/>
  * File Name：FileUtils.java  <br/>
@@ -31,6 +39,10 @@ import com.common.BaseConstants;
  *@Copyright: @2010-2018 重庆中科云丛科技有限公司  All Rights Reserved.
  */
 public class FileUtils {
+	
+	public static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+	
+	private static final int BUF_SIZE = 8096;
 
 	/**
 	 * CheckFolder:检查文件夹
@@ -222,6 +234,90 @@ public class FileUtils {
 				.replace("..\\", "")
 				.replace("%00", "")
 				.replace("\0", "");
+	}
+	
+	/**
+	 * 通过本地文件路径获取文件二进制数据
+	 * @return
+	 */
+	public static byte[] getFileDataByPath(String filePath) {
+		FileInputStream fis = null;
+		try {			
+			File file = new File(filePath);
+			if (file.exists()) {
+				int size = (int) file.length();
+				byte[] filedata = new byte[size];				
+				fis = new FileInputStream(file);
+				if (fis != null)
+				fis.read(filedata, 0, size);
+				return filedata;
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+				}
+			}
+		}		
+		return null;
+	}
+	
+	/**
+	 * 通过http获取文件二进制数据
+	 * @return
+	 */
+	public static byte[] getFileDataByHttp(String fileurl) {	
+		
+		if(StringUtils.isBlank(fileurl)){
+			return null;
+		}
+		
+		try{
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			BufferedInputStream bis = null;
+			HttpURLConnection httpUrl = null;
+			URL url = null;
+			byte[] buf = new byte[BUF_SIZE];
+			int size = 0;
+			
+			url = new URL(fileurl);
+			httpUrl = (HttpURLConnection) url.openConnection();
+			httpUrl.setConnectTimeout(10000);
+	
+			// 连接指定的资源
+			httpUrl.connect();
+			// 获取网络输入流
+			bis = new BufferedInputStream(httpUrl.getInputStream());
+			
+			// 保存文件
+			while ((size = bis.read(buf)) != -1) {
+				bos.write(buf, 0, size);
+			}			
+			bos.close();
+			bis.close();
+			httpUrl.disconnect();
+			return bos.toByteArray();
+		} catch(Exception e) {
+			logger.error("",e);
+		}
+		return null;
+	
+	}
+	
+	/**
+	 * 通过https获取文件二进制数据
+	 * @return
+	 */
+	public static byte[] getFileDataByHttps(String fileurl) {
+		
+		if(StringUtils.isBlank(fileurl)){
+			return null;
+		}
+		
+		return HttpsRequestProxy.getData(fileurl, null, null);
 	}
 
 }

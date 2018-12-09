@@ -93,6 +93,10 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 	<!-- 配置事务通知属性 -->  
     <tx:advice id="txAdvice" transaction-manager="transactionManager">  
         <!-- 定义事务传播属性 -->  
